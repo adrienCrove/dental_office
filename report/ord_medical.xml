@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <report
+                id="report_ordonnance_medical"
+                model="ord.medical"
+                string="Ordonnance"
+                name="dental_office.report_ord_view"
+                file="dental_office.ord_medical"
+                report_type="qweb-pdf"/>
+
+        <template id="report_ord_view">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                              <p class="text-left">
+
+                                    <h3>
+                                        <span t-att-style="style" t-esc="o.name.name"/>
+                                    </h3>
+
+                            </p>
+
+                            <p class="text-right">
+                                Date du jour :
+                                    <span t-att-style="style" t-esc="o.date_ord"/>
+
+                                <br/>
+                                <b>Etablit par :
+                                    <span t-att-style="style" t-esc="o.nom_medecin"/>
+                                </b>
+                            </p>
+                            <p class="text-right">
+                                  Echeance: <span t-att-style="style" t-esc="o.duree"/>
+                            </p>
+                            <br/>
+                            <br/>
+
+                            <h3 style="text-decoration:underline;text-align:center;">
+                                <b>ORDONNANCE</b>
+                            </h3>
+
+                            <br/>
+                            <br/>
+                            <table class="table table-condensed" style="width:90%; height: 90%; border-collapse:collapse;">
+                                <thead>
+                                    <tr style="border:1px solid black">
+
+                                        <th class="text-center" style="border:1px solid black">Nom Médicament</th>
+                                         <th class="text-center" style="border:1px solid black">Grammage</th>
+                                        <th class="text-center" style="border:1px solid black">Posologie</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.nom_med" t-as="d">
+                                        <tr style="border:1px solid black">
+                                            <td style="border:1px solid black;text-align:left;">
+                                                <span t-esc="d.nom.nom_medicament" style="font-size:16px;"/>
+                                            </td>
+                                            <td style="border:1px solid black;text-align:left;">
+                                                <span t-esc="d.gramme" style="font-size:16px;"/>
+                                            </td>
+                                            <td style="border:1px solid black;text-align:left;">
+                                                <span t-esc="d.prise" style="font-size:16px;"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+
+                                </tbody>
+
+                            </table>
+                            <br/>
+                            <br/>
+
+                            <p class="text-right">
+                                <h4 style="text-decoration:underline;text-align:right;">
+                                    <b>signature du medecin</b>
+                                </h4>
+                            </p>
+                        </div>
+
+                    </t>
+                </t>
+
+            </t>
+
+
+        </template>
+    </data>
+</odoo>

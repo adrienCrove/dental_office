@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--
+ tree view
+ -->
+
+
+        <record id="view_ord_tree" model="ir.ui.view">
+            <field name="name">Ordonnance.tree</field>
+            <field name="model">ord.medical</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <tree string="ord">
+                    <field name="ref"/>
+                    <field name="name"/>
+                    <field name="date_ord"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <!--
+ form view
+ -->
+        <record id="view_ord_form" model="ir.ui.view">
+            <field name="name">Ordonnance.form</field>
+            <field name="model">ord.medical</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="ord">
+                    <sheet>
+                        <div class="oe_left" style="width: 500px;">
+                            <div class="oe_title" style="width: 390px;">
+                                <label class="oe_edit_only" for="ref"/>
+                                <h1>
+                                    <field name="ref" class="oe_inline"/>
+                                </h1>
+                            </div>
+                        </div>
+
+                        <group col="2">
+                            <group>
+                                <field name="name" options="{'no_create_edit': True}"/>
+                                <field name="date_ord" readonly="1"/>
+
+
+                            </group>
+                            <group>
+                                 <field name="duree"/>
+                                 <field name="nom_medecin"/>
+                            </group>
+                        </group>
+
+
+                        <notebook colspan="4">
+                            <page string="Ligne medicament">
+                                <field name="nom_med">
+                                    <tree string="ligne medicament" editable="bottom">
+                                        <field name="nom"/>
+                                        <field name="gramme"/>
+                                        <field name="prise"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+                    <!--<div class="oe_chatter">
+                     <field name="message_follower_ids" widget="mail_followers"/>
+                     <field name="message_ids" widget="mail_thread"/>
+                    </div>-->
+                </form>
+            </field>
+        </record>
+
+
+        <!--
+            search view
+            -->
+
+        <record id="view_ord_search" model="ir.ui.view">
+            <field name="name">ordonnance.search</field>
+            <field name="model">ord.medical</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="ordonnance">
+                    <field name="ref"/>
+                    <field name="name"/>
+                    <newline/>
+                </search>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="action_view_ord">
+            <field name="name">Ordonnance</field>
+            <field name="res_model">ord.medical</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Créer l'ensemble des ordonnances relatifs au(x) patients
+                </p>
+            </field>
+        </record>
+
+
+
+        <!--
+            count id traitment
+            -->
+        <record model="ir.sequence" id="seq_lab_request">
+            <field name="name">Ordonnance</field>
+            <field name="code">ord.medical</field>
+            <field name="prefix">ORD</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+
+    </data>
+</odoo>

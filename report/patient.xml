@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <report
+                id="report_patient_record"
+                model="patient.record"
+                string="Fiche patient"
+                name="dental_office.report_patient"
+                file="dental_office.patient_report"
+                report_type="qweb-pdf"/>
+
+
+        <template id="dental_office.report_patient">
+
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                            <p class="text-center">
+
+                                <h3>
+                                    <span t-att-style="style" t-esc="o.patient_name"/>
+                                </h3>
+
+                            </p>
+
+
+                            <p>
+                                <strong>
+                                    <h6 style="text-decoration:underline">Informations generales</h6>
+                                </strong>
+
+                            </p>
+                            <p>
+                                Genre :
+                                <strong>
+                                    <span t-att-style="style"
+                                          t-esc="dict(o.fields_get(allfields=['patient_gender'])['patient_gender']['selection'])[o.patient_gender]"/>
+                                </strong>
+                                <br/>
+                                Date de naissance :
+                                <strong>
+                                    <span t-att-style="style" t-esc="o.patient_dob"/>
+                                </strong>
+                                <br/>
+                                Age :
+                                <strong>
+                                    <span t-att-style="style" t-esc="o.age"/>
+                                </strong>
+                                <br/>
+                                Pays :
+                                <strong>
+                                    <span t-att-style="style" t-esc="o.nationality_id.name"/>
+                                </strong>
+                                <br/>
+                                Profession :
+                                <strong>
+                                    <span t-att-style="style" t-esc="o.patient_profession"/>
+                                </strong>
+                                <br/>
+                                Statut matrimonial:
+
+                                <strong>
+                                    <span t-att-style="style"
+                                          t-esc="dict(o.fields_get(allfields=['patient_statut'])['patient_statut']['selection'])[o.patient_statut]"/>
+                                </strong>
+
+                                <br/>
+                                Nom employeur :
+                                <strong>
+                                    <span t-att-style="style" t-esc="o.employee_patient"/>
+                                </strong>
+                            </p>
+
+
+                            <p>
+                                <strong>
+                                    <h6 style="text-decoration:underline">Rendez-vous</h6>
+                                </strong>
+                            </p>
+                            <t t-if="o.rdv_ids">
+                                <table class="table table-condensed" style="width:100% ; border-collapse:collapse;">
+                                    <thead>
+                                        <tr style="border:1px solid black">
+
+                                            <th class="text-center" style="border:1px solid black">Référence</th>
+                                            <th class="text-center" style="border:1px solid black">Nom du patient</th>
+                                            <th class="text-center" style="border:1px solid black">Motif</th>
+                                            <th class="text-center" style="border:1px solid black">Date</th>
+                                            <th class="text-center" style="border:1px solid black">Médecin</th>
+                                            <th class="text-center" style="border:1px solid black">Statut</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="o.rdv_ids" t-as="d">
+                                            <tr style="border:1px solid black">
+
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <span t-esc="d.id_rdv" style="font-size:16px;"/>
+                                                </td>
+
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <span t-esc="d.name.patient_name" style="font-size:16px;"/>
+                                                </td>
+
+
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <span t-esc="d.motif_rdv" style="font-size:16px;"/>
+                                                </td>
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <span t-esc="d.patient_date_rdv" style="font-size:16px;"/>
+                                                </td>
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <span t-esc="d.doctor_rdv.name" style="font-size:16px;"/>
+                                                </td>
+
+                                                <td style="border:1px solid black;text-align:center;">
+                                                  <strong> <span t-esc="dict(d.fields_get(allfields=['state'])['state']['selection'])[d.state]" style="font-size:16px;"/></strong>
+                                                </td>
+
+                                            </tr>
+                                        </t>
+                                    </tbody>
+
+                                </table>
+                            </t>
+                            <t t-else="">
+
+                                <strong>
+                                    <span>Aucun élément trouvé</span>
+                                </strong>
+
+                            </t>
+
+
+                            <p>
+                                <strong>
+                                    <h6 style="text-decoration:underline">Consultation</h6>
+                                </strong>
+                            </p>
+                            <t t-if="o.con_ids">
+                                <table class="table table-condensed" style="width:100% ; border-collapse:collapse;">
+                                    <thead>
+                                        <tr style="border:1px solid black">
+
+                                            <th class="text-center" style="border:1px solid black">Référence</th>
+                                            <th class="text-center" style="border:1px solid black">Nom du patient</th>
+                                            <th class="text-center" style="border:1px solid black">Dents</th>
+                                            <th class="text-center" style="border:1px solid black">Diagnostic</th>
+                                            <th class="text-center" style="border:1px solid black">Date du jour</th>
+                                            <th class="text-center" style="border:1px solid black">Statut</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="o.con_ids" t-as="d">
+                                            <tr style="border:1px solid black">
+
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <span t-esc="d.id_consult" style="font-size:16px;"/>
+                                                </td>
+
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <span t-esc="d.name.patient_name" style="font-size:16px;"/>
+                                                </td>
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <t t-foreach="d.dents" t-as="l">
+
+                                                        <span t-esc="l.dents" style="font-size:16px;"/>
+
+                                                    </t>
+                                                </td>
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <span t-esc="d.diagnotic" style="font-size:16px;"/>
+                                                </td>
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <span t-esc="d.date_consult" style="font-size:16px;"/>
+                                                </td>
+
+                                                <td style="border:1px solid black;text-align:center;">
+                                                     <strong> <span t-esc="dict(d.fields_get(allfields=['state'])['state']['selection'])[d.state]" style="font-size:16px;"/></strong>
+                                                </td>
+
+                                            </tr>
+                                        </t>
+                                    </tbody>
+
+                                </table>
+                            </t>
+
+                            <t t-else="">
+
+                                <strong>
+                                    <span>Aucun élément trouvé</span>
+                                </strong>
+
+                            </t>
+
+
+                            <p>
+                                <strong>
+                                    <h6 style="text-decoration:underline">Ordonnance medicale</h6>
+                                </strong>
+                            </p>
+                            <t t-if="o.ord_ids">
+                                <table class="table table-condensed" style="width:100% ; border-collapse:collapse;">
+                                    <thead>
+                                        <tr style="border:1px solid black">
+
+                                            <th class="text-center" style="border:1px solid black">Référence</th>
+                                            <th class="text-center" style="border:1px solid black">Nom du patient</th>
+                                            <th class="text-center" style="border:1px solid black">Date du jour</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="o.ord_ids" t-as="d">
+                                            <tr style="border:1px solid black">
+
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <span t-esc="d.ref" style="font-size:16px;"/>
+                                                </td>
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <span t-esc="d.name.patient_name" style="font-size:16px;"/>
+                                                </td>
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <span t-esc="d.date_ord" style="font-size:16px;"/>
+                                                </td>
+
+                                            </tr>
+                                        </t>
+                                    </tbody>
+
+                                </table>
+
+                            </t>
+
+                            <t t-else="">
+
+                                <strong>
+                                    <span>Aucun élément trouvé</span>
+                                </strong>
+
+                            </t>
+
+
+                            <p>
+                                <strong>
+                                    <h6 style="text-decoration:underline">Demande expertise</h6>
+                                </strong>
+                            </p>
+                            <t t-if="o.ord_ids">
+                                <table class="table table-condensed" style="width:100% ; border-collapse:collapse;">
+                                    <thead>
+                                        <tr style="border:1px solid black">
+
+                                            <th class="text-center" style="border:1px solid black">Référence</th>
+                                            <th class="text-center" style="border:1px solid black">Nom du patient</th>
+                                            <th class="text-center" style="border:1px solid black">Date demande
+                                                d'expertise
+                                            </th>
+                                            <th class="text-center" style="border:1px solid black">Motif expertise</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="o.expertise_ligne" t-as="d">
+                                            <tr style="border:1px solid black">
+
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <span t-esc="d.ref" style="font-size:16px;"/>
+                                                </td>
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <span t-esc="d.patient_expertise.patient_name"
+                                                          style="font-size:16px;"/>
+                                                </td>
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <span t-esc="d.date_expertise" style="font-size:16px;"/>
+                                                </td>
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <span t-esc="d.motif_expertise" style="font-size:16px;"/>
+                                                </td>
+
+                                            </tr>
+                                        </t>
+                                    </tbody>
+
+                                </table>
+                            </t>
+
+                            <t t-else="">
+
+                                <strong>
+                                    <span>Aucun élément trouvé</span>
+                                </strong>
+
+                            </t>
+
+
+                            <p>
+                                <strong>
+                                    <h6 style="text-decoration:underline">Certificat médical</h6>
+                                </strong>
+                            </p>
+                            <t t-if="o.ord_ids">
+                                <table class="table table-condensed" style="width:100% ; border-collapse:collapse;">
+                                    <thead>
+                                        <tr style="border:1px solid black">
+
+                                            <th class="text-center" style="border:1px solid black">Référence</th>
+                                            <th class="text-center" style="border:1px solid black">Nom du patient</th>
+                                            <th class="text-center" style="border:1px solid black">Durée</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <t t-foreach="o.ord_ids" t-as="d">
+
+
+                                            <tr style="border:1px solid black">
+
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <span t-esc="d.ref" style="font-size:16px;"/>
+                                                </td>
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <span t-esc="d.name.patient_name" style="font-size:16px;"/>
+                                                </td>
+                                                <td style="border:1px solid black;text-align:center;">
+                                                    <span t-esc="d.date_ord" style="font-size:16px;"/>
+                                                </td>
+
+
+                                            </tr>
+
+                                        </t>
+
+                                    </tbody>
+
+                                </table>
+                            </t>
+
+                            <t t-else="">
+
+                                <strong>
+                                    <span>Aucun élément trouvé</span>
+                                </strong>
+
+                            </t>
+
+
+                        </div>
+
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

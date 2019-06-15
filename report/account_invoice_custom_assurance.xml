@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <report
+                id="report_invoice_custom_assurance"
+                model="account.invoice"
+                string="Facture Assureur"
+                name="dental_office.report_inherit_module_base_assureur"
+                file="dental_office.account_invoice_custom_assurance"
+                report_type="qweb-pdf"/>
+
+
+        <template id="report_invoice_document_assureur" inherit_id="account.report_invoice">
+
+            <xpath expr="//t[@t-call='account.report_invoice_document_base']" position="replace">
+
+                <t t-call="dental_office.report_invoice_document_assurance" t-lang="o.partner_id.lang"/>
+
+
+            </xpath>
+
+
+        </template>
+
+
+    </data>
+</odoo>
+

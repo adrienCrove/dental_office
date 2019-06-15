@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+        <!--
+            menu view
+            Supprimer les group à l'installation
+        -->
+
+        <menuitem id="patient" sequence="100" name="Patient" parent="cabinet"/>
+        <menuitem id="save_patient" name="Patients" parent="patient" action="action_view_patients"/>
+
+
+        <menuitem id="rdv" sequence="110" name="Rendez vous" parent="cabinet"/>
+        <menuitem id="save_rdv" name="Rendez-vous" parent="rdv" sequence="3" action="action_view_rdv"/>
+        <menuitem id="save_rdv_today" name="Rendez-vous du jour" sequence="4" parent="rdv" action="action_view_rdv_2"/>
+
+
+        <menuitem id="Traitements" name="Facturation" parent="cabinet" sequence="120"
+                  groups="dental_office.group_dental_office_administrateur"/>
+        <menuitem id="save_traitement" name="Facturation du traitement" parent="Traitements"
+                  action="action_view_traitment"/>
+
+
+        <menuitem id="Rapport" name="Rapport" parent="cabinet" sequence="130"
+                  groups="dental_office.group_dental_office_administrateur"/>
+        <menuitem id="statistique" name="Analyse Statistique" parent="Rapport" sequence="10"/>
+        <menuitem id="facture" name="Facture" parent="statistique" action="action_view_stastique"/>
+
+        <menuitem id="document" name="Document" parent="Rapport" sequence="20"/>
+        <menuitem id="save_certificat_medical" name="Certificat medical" parent="document"
+                  action="action_view_medicertificate"/>
+        <menuitem id="save_ordonnance" name="Ordonnance" parent="document" action="action_view_ord"/>
+        <menuitem id="expertise_sub_menu" action="expertise_view_action" name='Expertise' parent="document"/>
+        <menuitem id="exam_sub_menu" action="examen_view_action" name='Examens' parent="document"/>
+
+
+        <menuitem id="Configuration" name="Configuration" parent="cabinet" sequence="140"
+                  groups="dental_office.group_dental_office_administrateur"/>
+        <menuitem id="Soins" name="Soins" parent="Configuration" sequence="10"/>
+        <menuitem id="type_soins" name="Soins" parent="Soins" action="action_view_soins"/>
+        <menuitem id="categorie" name="Categorie" parent="Soins" action="action_view_categorie"/>
+        <menuitem id="menu_open_view_employee_list_my" action="open_view_employee_list_my" parent="Configuration" sequence="30"/>
+        <menuitem id="type_document" action="type_document_action" name="Type document" parent="Configuration" sequence="50"/>
+
+    </data>
+</odoo>

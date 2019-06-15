@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!--
+
+              Examens
+
+              !-->
+        <record id="examen_view_action" model="ir.actions.act_window">
+            <field name="name">Demande Examen</field>
+            <field name="res_model">examen.record</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Créer une nouvelle demande d'examen
+                </p>
+
+                <p>
+                    Ce module vous permet d'enregistrer les demandes d'examens.....
+                </p>
+
+            </field>
+        </record>
+
+        <record id="examen_form" model="ir.ui.view">
+            <field name="name">examen</field>
+            <field name="model">examen.record</field>
+            <field name="arch" type="xml">
+                <form string="Formulaire de demande d' examen">
+                    <header>
+
+                    </header>
+                    <sheet string="Examen">
+
+                        <div class="oe_left" style="width: 500px;">
+                            <div class="oe_title" style="width: 390px;">
+                                <label class="oe_edit_only" for="ref"/>
+                                <h1>
+                                    <field name="ref" class="oe_inline"/>
+                                </h1>
+                            </div>
+                        </div>
+
+                        <group>
+                            <field name="name" options="{'no_create_edit': True}"/>
+                            <field name="date_ordonnance" readonly="1"/>
+
+
+                        </group>
+
+                        <group>
+                            <field name="nom_examen"/>
+                            <field name="nom_medecin"/>
+                        </group>
+
+                    </sheet>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="examen_tree" model="ir.ui.view">
+            <field name="name">Demande Examen</field>
+            <field name="model">examen.record</field>
+            <field name="arch" type="xml">
+                <tree string="Liste des examens">
+                    <field name="ref"/>
+                    <field name="name"/>
+                    <field name="date_ordonnance"/>
+                    <field name="nom_examen"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_exam_search" model="ir.ui.view">
+            <field name="name">Demande Examen</field>
+            <field name="model">examen.record</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="examen">
+                    <field name="ref"/>
+                    <field name="name" />
+                    <newline/>
+                </search>
+            </field>
+        </record>
+
+
+
+        <!--
+          count id ordonnance
+          -->
+        <record model="ir.sequence" id="seq_lab_examen">
+            <field name="name">Examen</field>
+            <field name="code">examen.record</field>
+            <field name="prefix">EXA</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+
+
+    </data>
+</odoo>

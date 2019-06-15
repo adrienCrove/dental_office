@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+
+        <!-- CONSULTATION MODE PAYSAGE-->
+        <record id="paperformat_cny_LS" model="report.paperformat">
+
+            <field name="name">European A4 Landscape</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">23</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+
+        <report
+                id="report_invoice_consultation"
+                model="consultation.record"
+                string="Facture consultation"
+                name="dental_office.report_invoice_document_consultation"
+                file="dental_office.consultation_report"
+                report_type="qweb-pdf"
+               />
+
+        <record id="paper_record_orientation" model="report.paperformat">
+            <field name="name">Consultation</field>
+            <field name="orientation">Landscape</field>
+
+        </record>
+
+
+        <template id="report_invoice_document_consultation">
+
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+                    <div class="page">
+                        <t t-foreach="docs" t-as="o">
+                            <t t-foreach="o.invoice_ids" t-as="l">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        Reçu de :
+                                        <div class="text-center">
+                                            <strong>
+                                                <span t-field="l.partner_id"/>
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        La somme de :
+                                        <div class="text-center">
+                                            <strong>
+                                                <span t-field="l.amount_total"/>
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <t t-foreach="l.invoice_line_ids" t-as="t">
+                                            Motif :
+                                            <div class="text-center">
+                                                <strong>
+                                                    <span t-field="t.name"/>
+                                                </strong>
+                                            </div>
+                                        </t>
+
+
+                                    </div>
+                                    <div class="col-xs-6">
+
+                                        Reste :
+                                        <div class="text-center">
+                                            <span/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="text-center">
+                                            <strong>Fait:
+                                                <span t-field="o.date_consult"/>
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <div class="text-center">
+                                            <span class="border-black">
+                                                <strong>Le chirurgien dentiste</strong>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <div class="text-center">
+                                            <span class="border-black">
+                                                <strong>Le beneficiaire</strong>
+                                            </span>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </t>
+                        </t>
+
+                    </div>
+                </t>
+
+
+            </t>
+
+
+        </template>
+
+
+    </data>
+</odoo>

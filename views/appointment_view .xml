@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!--
+        agenda.record: enregistrer rdv pour traitement
+        -->
+
+        <!--
+         tree view
+         -->
+        <record id="view_rdv_tree" model="ir.ui.view">
+            <field name="name">rdv.record.tree</field>
+            <field name="model">rdv.record</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <tree string="rdv">
+                    <field name="name"/>
+                    <field name="motif_rdv"/>
+                    <field name="patient_date_rdv"/>
+                    <field name="doctor_rdv"/>
+                    <field name="state"/>
+
+                </tree>
+            </field>
+        </record>
+
+        <!--
+        form view
+        -->
+        <record id="view_rdv_form" model="ir.ui.view">
+            <field name="name">rdv.record.form</field>
+            <field name="model">rdv.record</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="patients">
+                    <header>
+                        <button name="confirm_appointment" states="draft" string="Confirmer" type="object"
+                                class="oe_highlight"/>
+                        <button name="cancel_appointment" states="draft,confirm" string="Annuler" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm"
+                        />
+                    </header>
+                    <sheet>
+
+                        <group col="2">
+                            <group>
+                                <field name="name"/>
+                                <field name="doctor_rdv"/>
+                                <field name="motif_rdv"/>
+
+                            </group>
+                            <group>
+
+                                <field name="patient_date_rdv"/>
+
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!--
+        calendar view
+        -->
+
+
+        <record id="view_appointment_calendar" model="ir.ui.view">
+            <field name="name">rdv.record.calendar</field>
+            <field name="model">rdv.record</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <calendar string="Rendez-vous" date_start="patient_date_rdv" mode="name" color="doctor_rdv">
+                    <field name="name"/>
+                    <field name="motif_rdv"/>
+                </calendar>
+            </field>
+        </record>
+
+        <!--
+        search view
+        -->
+
+
+        <record id="view_appointment_search" model="ir.ui.view">
+            <field name="name">rdv.record.search</field>
+            <field name="model">rdv.record</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="Patient">
+                    <field name="name"/>
+                    <field name="doctor_rdv"/>
+                    <field name="patient_date_rdv"/>
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter name="doctor_rdv" string="Docteur"
+                                domain="[]" context="{'group_by':'doctor_rdv'}"/>
+                        <filter name="name" string="statut"
+                                domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!--
+        home view
+        -->
+
+        <record model="ir.actions.act_window" id="action_view_rdv">
+            <field name="name">Rendez-vous</field>
+            <field name="res_model">rdv.record</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,calendar,form</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Créer un rdv avec un patient
+                </p>
+            </field>
+        </record>
+
+        <!--
+        menu view
+        -->
+
+        <menuitem id="save_rdv" name="Rendez-vous" parent="patient" action="action_view_rdv"/>
+
+
+    </data>
+</odoo>

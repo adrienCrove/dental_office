@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_certificat_medical_tree" model="ir.ui.view">
+            <field name="name">certificat_medical.tree</field>
+            <field name="model">cert.medical</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <tree string="Certificat medical">
+                    <field name="ref"/>
+                    <field name="patient_id"/>
+                    <field name="period"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_certificat_medical_form" model="ir.ui.view">
+            <field name="name">certificat_medical.form</field>
+            <field name="model">cert.medical</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="certificat">
+                    <sheet>
+                        <div class="oe_left" style="width: 500px;">
+                            <div class="oe_title" style="width: 390px;">
+                                <label class="oe_edit_only" for="ref"/>
+                                <h1>
+                                    <field name="ref" class="oe_inline"/>
+                                </h1>
+                            </div>
+                        </div>
+                        <group col="2" colspan="3">
+                            <group>
+                                <field name="patient_id" options="{'no_create_edit': True}"/>
+                                <label for="period"/>
+                                <div class="o_row">
+                                    <field name="period"/>
+                                    <span>Jours</span>
+                                </div>
+
+                            </group>
+                            <group>
+                                <field name="motif"/>
+                                <field name="create_date" readonly="1"/>
+                                <field name="nom_medecin_cer"/>
+                            </group>
+
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--
+            search view
+            -->
+
+        <record id="view_certificat_search" model="ir.ui.view">
+            <field name="name">certificat_medical.search</field>
+            <field name="model">cert.medical</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="certificat">
+                    <field name="ref"/>
+                    <field name="patient_id"/>
+                    <newline/>
+                </search>
+            </field>
+        </record>
+
+
+        <!--
+         home view
+         -->
+        <record model="ir.actions.act_window" id="action_view_medicertificate">
+            <field name="name">Certificat medical</field>
+            <field name="res_model">cert.medical</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Créer l'ensemble des certificat(s) médical(aux) relatif(s) au(x)
+                    patient(s)
+                </p>
+            </field>
+        </record>
+
+
+        <!--
+            prefix id certificat medical
+            -->
+        <record model="ir.sequence" id="seq_lab_certif">
+            <field name="name">Certificat</field>
+            <field name="code">cert.medical</field>
+            <field name="prefix">CML</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+
+
+
+        <!--
+         menu view
+         -->
+
+
+    </data>
+</odoo>

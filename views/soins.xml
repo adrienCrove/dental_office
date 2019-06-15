@@ -1,0 +1,150 @@
+<odoo>
+    <data>
+
+        soins.record: enregistrer les devis pour un patient
+
+        --><!--
+            tree view
+            -->
+        <record id="view_soins_tree" model="ir.ui.view">
+            <field name="name">soins.record.tree</field>
+            <field name="model">soins.record</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <tree string="soins">
+                    <field name="nomsoin"/>
+                    <field name="codesoin"/>
+                    <field name="prixsoin"/>
+                    <field name="Nomcat"/>
+                </tree>
+            </field>
+        </record><!--
+            form view
+            -->
+        <record id="view_soins_form" model="ir.ui.view">
+            <field name="name">soins.record.form</field>
+            <field name="model">soins.record</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="soins">
+                    <sheet>
+                        <group col="2">
+                            <group>
+                                <field name="nomsoin"/>
+                                <field name="codesoin"/>
+                            </group>
+                            <group>
+                                <field name="prixsoin"/>
+                                <field name="Nomcat"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record><!--
+            search view
+            -->
+        <record id="view_soins_search" model="ir.ui.view">
+            <field name="name">soins.record.search</field>
+            <field name="model">soins.record</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="soin">
+                    <field name="nomsoin"/>
+                    <field name="codesoin"/>
+                    <field name="prixsoin"/>
+                    <field name="Nomcat"/>
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter name="codesoin" string="Code" domain="[]" context="{'group_by':'codesoin'}"/>
+                        <filter name="prixsoin" string="Prix" domain="[]" context="{'group_by':'prixsoin'}"/>
+                    </group>
+                </search>
+            </field>
+        </record><!--
+            home view
+            -->
+        <record model="ir.actions.act_window" id="action_view_soins">
+            <field name="name">Soins</field>
+            <field name="res_model">soins.record</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Créer un soins
+                </p>
+            </field>
+        </record><!--
+            tree view categorie
+            -->
+        <record id="view_categorie_tree" model="ir.ui.view">
+            <field name="name">soin.categorie.tree</field>
+            <field name="model">soin.categorie</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <tree string="categories">
+                    <field name="Nomcat"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record><!--
+            form view
+            -->
+        <record id="view_categorie_form" model="ir.ui.view">
+            <field name="name">soin.categorie.form</field>
+            <field name="model">soin.categorie</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="categories">
+                    <sheet>
+                        <group col="2">
+                            <group>
+                                <field name="Nomcat"/>
+                            </group>
+                            <group>
+                                <field name="code"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record><!--
+            search view
+            -->
+        <record id="view_categorie_search" model="ir.ui.view">
+            <field name="name">soin.categorie.search</field>
+            <field name="model">soin.categorie</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="categorie">
+                    <field name="Nomcat"/>
+                    <field name="code"/>
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter name="code" string="Code" domain="[]" context="{'group_by':'code'}"/>
+                    </group>
+                </search>
+            </field>
+        </record><!--
+            home view
+            -->
+        <record model="ir.actions.act_window" id="action_view_categorie">
+            <field name="name">Catégorie</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">soin.categorie</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="search_view_id" ref="view_categorie_search"/>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Créer un soin.
+                </p>
+            </field>
+        </record><!--
+            menu view
+            -->
+
+    </data>
+</odoo>

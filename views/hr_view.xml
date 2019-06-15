@@ -1,0 +1,36 @@
+<odoo>
+     <data>
+
+         <record id="open_view_employee_list_my" model="ir.actions.act_window">
+            <field name="name">Medecin</field>
+             <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.employee</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('doctor_rdv','=',1)]</field>
+            <field name="context">{'default_employee':0, 'default_doctor_rdv':1}</field>
+            <field name="filter" eval="True"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    créer nouveau médecin.
+                </p>
+            </field>
+        </record>
+
+        <record id="hr_medicin_employee_form" model="ir.ui.view">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref='hr.view_employee_form'/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="doctor_rdv"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+
+    </data>
+</odoo>

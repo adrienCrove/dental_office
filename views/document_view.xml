@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model='ir.ui.view' id='document_form_view'>
+        <field name="name">patient.document.form</field>
+        <field name="model">patient.document</field>
+        <field name="arch" type="xml">
+            <form string="Document">
+                <sheet>
+
+                    <div class="oe_left" style="width: 500px;">
+                        <div class="oe_title" style="width: 390px;">
+                            <label class="oe_edit_only" for="id_doc"/>
+                            <h1>
+                                <field name="id_doc" class="oe_inline"/>
+                            </h1>
+                        </div>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="name" domain="[('is_pat','=',True)]"/>
+                            <field name="doc_attachment_id" widget="many2many_binary" class="oe_inline"/>
+                            <field name="patient_ref" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="type_doc" options="{'no_create_edit': True}"/>
+                            <field name="issue_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model='ir.ui.view' id='patient_document_tree_view'>
+        <field name="name">patient.document.tree</field>
+        <field name="model">patient.document</field>
+        <field name="arch" type="xml">
+            <tree string="Document">
+                <field name="id_doc"/>
+                <field name="name"/>
+                <field name="issue_date"/>
+                <field name="type_doc"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_patient_search" model="ir.ui.view">
+        <field name="name">patient.document.search</field>
+        <field name="model">patient.document</field>
+        <field name="priority" eval="8"/>
+        <field name="arch" type="xml">
+            <search string="Document">
+                <field name="name"/>
+                <field name="type_doc"/>
+                <field name="issue_date"/>
+                <newline/>
+                <group expand="0" string="Group By...">
+                    <filter name="type_doc" string="Type document"
+                            domain="[]" context="{'group_by':'type_doc'}"/>
+                    <filter name="name" string="Nom"
+                            domain="[]" context="{'group_by':'name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.sequence" id="seq_document_request">
+        <field name="name">Document</field>
+        <field name="code">patient.document</field>
+        <field name="prefix">Doc</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+</odoo>

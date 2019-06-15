@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <report
+                id="report_certificat_medical"
+                model="cert.medical"
+                string="Certificat medical"
+                name="dental_office.report_certificat_view"
+                file="dental_office.certificat_medical_report"
+                report_type="qweb-pdf"/>
+
+
+        <template id="report_certificat_view">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                            <p class="text-left">
+
+                                    <h3>
+                                         <span t-att-style="style" t-esc="o.ref"/>
+                                    </h3>
+
+                            </p>
+
+                            <p class="text-right">
+                                <!-- <b>Date du jour : <span t-att-style="style" t-esc="o.create_date"/> </b>-->
+                            </p>
+                            <br/>
+                            <br/>
+
+                            <h3 style="text-decoration:underline;text-align:center;">
+                                <b>Certificat médical</b>
+                            </h3>
+                            <br/>
+                            <br/>
+                            <p>
+                                Je soussigné(e), docteur  <strong><span t-att-style="style" t-esc="o.nom_medecin_cer"/> </strong>,   chirurgien-dentiste, certifie avoir examiné monsieur/madame
+                            <strong>    <span t-att-style="style"
+                                      t-esc="o.patient_id.name"/></strong>  ,
+                            </p>
+                            <p>
+
+
+                            </p>
+                            <!--<p>-->
+                                <!--occupant le poste de-->
+                                <!--<span t-att-style="style" t-esc="o.activity"/>-->
+                            <!--</p>-->
+                          <p t-if="o.motif == 'at'" >
+                                Une interruption temporaire de travail de
+                             <strong> <span t-att-style="style" t-esc="o.period"/>
+                                 jours</strong> lui est conseillé
+                            </p>
+                            <p>
+                                En foi de quoi je lui délivre ce présent certificat pour servir et valoir ce que de droit
+                            </p>
+                            <br/>
+                            <br/>
+                            <br>
+                                <br>
+                                    <br>
+                                        <br>
+                                            <br>
+                                                <p class="text-right">
+                                                    <h4 style="text-decoration:underline;text-align:right;">
+                                                        <b>Signature du medecin</b>
+                                                    </h4>
+                                                </p>
+                                            </br>
+                                        </br>
+
+                                    </br>
+                                </br>
+                            </br>
+
+                        </div>
+
+                    </t>
+                </t>
+
+            </t>
+
+
+        </template>
+    </data>
+</odoo>

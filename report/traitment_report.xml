@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <report
+                id="report_traitment"
+                model="traitment.record"
+                string="Devis/Facture(s)"
+                name="dental_office.report_traitment_view"
+                file="dental_office.report_traitment"
+                report_type="qweb-pdf"/>
+        <template id="report_traitment_view">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="report.external_layout">
+                    <div class="page">
+                        <!--<h3 style="text-decoration:underline;text-align:center;">
+                            <b>Devis des traitements</b>
+                        </h3>-->
+                        <br/>
+                        <br/>
+                        <div class="row mt32 mb32" id="informations">
+                            <div  class="col-xs-3">
+                                <strong>Reference:</strong>
+                                <p t-field="o.name"/>
+                            </div>
+
+                        </div>
+                        <table width="99%" style="margin-left:50px;margin-top:5px;border: None solid black;">
+                            <tr>
+                                <td style="width:50px;height:25px">
+                                    <span><strong>Patient:</strong></span>
+                                    <span t-att-style="style" t-esc="o.name_patient_id.name.name"/>
+                                </td>
+
+                                <td style="width:50px;height:25px">
+                                    <span><strong>Date:</strong></span>
+                                    <span t-att-style="style" t-esc="o.date_today"/>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Reference</th>
+                                    <th>Description</th>
+                                    <!--<th>Dent(s) à soigner</th>-->
+                                    <th class="text-right"> Prix</th>
+                                    <th class="text-right price_tax_included" groups="sale.group_show_price_total">Total
+                                        Price
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Lines associated -->
+                            <t t-foreach="o.sale_order_line_ids" t-as="l">
+                                <tr>
+                                    <td><span t-field="l.default_code"/></td>
+                                    <td>
+                                        <span t-field="l.name"/>
+                                    </td>
+                                   <!-- <td>
+                                        <span t-field="l.number_of_tooth"/>
+                                    </td>-->
+                                    <td class="text-right">
+                                        <span t-field="l.list_price"/>
+                                    </td>
+
+                                </tr>
+                            </t>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </t>
+
+            </t>
+
+
+        </template>
+    </data>
+</odoo>
