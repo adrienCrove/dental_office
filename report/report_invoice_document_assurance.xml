@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+        <report
+                id="report_invoice_custom_assurance"
+                model="account.invoice"
+                string="Facture Assurance"
+                name="dental_office.report_invoice_document_assurance"
+                file="dental_office.account_invoice_custom_assurance"
+                report_type="qweb-pdf"/>
+
+
+        <template id="report_invoice_document_assurance">
+            <t t-call="report.external_layout">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+                    <div class="page">
+                        <div class="row">
+                            <p class="text-left">
+                                <span t-att-style="style" t-esc="o.number"/>
+                            </p>
+                            <p class="text-right">
+                                <span t-att-style="style" t-esc="o.date_invoice"/>
+                            </p>
+                        </div>
+                        <div class="row">
+                            <strong>
+                                <h4 style="text-decoration:underline;text-align:center;">FACTURES POUR SOINS DENTAIRES
+
+                                </h4>
+                            </strong>
+                            <br>
+                                <br>
+
+                                </br>
+                            </br>
+                            <p>Le Docteur Gamgne Cathérine vous présente ses remerciements et vous adresse selon l'usage
+                                , le relevé de ses honoraires s'élévant de
+                                <strong>
+                                    <span t-esc="o.montant_assur" style="font-size:16px;"/>
+                                </strong>
+                                FCFA
+                            </p>
+                            <br>
+
+                            </br>
+                            <p class="text-center">
+                                Pour soins donnés à Mr/Mme
+                                <strong>
+                                    <span t-esc="o.partner_id.name" style="font-size:16px;"/>
+                                </strong>
+                            </p>
+
+                        </div>
+                        <br>
+
+                        </br>
+                        <table class="table table-condensed" style="width:100% ; border-collapse:collapse;">
+                            <thead>
+                                <tr style="border:1px solid black">
+
+                                    <th class="text-center" style="border:1px solid black">Nature de l'intervention</th>
+                                    <th class="text-center" style="border:1px solid black">Montant</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.invoice_line_ids" t-as="d">
+                                    <tr style="border:1px solid black">
+
+                                        <td style="border:1px solid black;text-align:center;">
+                                            <span t-esc="d.name" style="font-size:16px;"/>
+                                        </td>
+
+                                        <td style="border:1px solid black;text-align:center;">
+                                            <span t-esc="d.price_unit" style="font-size:16px;"/>
+                                        </td>
+
+
+                                    </tr>
+
+
+                                </t>
+
+                            </tbody>
+
+                        </table>
+                        <div class="row">
+                            <div class="col-xs-4 pull-right">
+                                <table class="table table-condensed">
+                                    <tr class="border-black">
+                                        <td>
+                                            <strong>Montant Total des soins</strong>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-att-style="style" t-esc="o.amount_total"
+                                                  t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Montant Total de la facture</strong>
+                                        </td>
+
+
+                                        <td class="text-right">
+                                            <span t-att-style="style" t-esc="o.amount_total"
+                                                  t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <strong>Montant Entreprise</strong>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-att-style="style" t-esc="o.montant_assur"
+                                                  t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                                        </td>
+                                    </tr>
+
+
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </t>
+            </t>
+
+
+        </template>
+
+    </data>
+</odoo>

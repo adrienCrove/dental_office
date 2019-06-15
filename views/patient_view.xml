@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <menuitem id="cabinet" name="Cabinet dentaire" sequence="110"/>
+        <!--
+         patient.record: enregistrer patient
+         -->
+
+        <!--
+        kanban view
+        -->
+        <record model="ir.ui.view" id="kanban_view_patient">
+            <field name="name">Patient Kanban</field>
+            <field name="model">patient.record</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="o_kanban_image">
+                                    <img t-att-src="kanban_image('patient.record', 'patient_photo', record.id.value)"/>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <strong>
+                                        <ul>
+                                            <li>Nom :
+                                                <field name="name"/>
+                                                <field name="patient_name" invisible="1"/>
+                                            </li>
+                                            <li>Date de naissance:
+                                                <field name="patient_dob"/>
+                                            </li>
+                                            <li>Reference:
+                                                <field name="refp"/>
+                                            </li>
+                                        </ul>
+                                    </strong>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+        <!--
+        Tree view
+        -->
+
+        <record id="view_patient_tree" model="ir.ui.view">
+            <field name="name">patient.record.tree</field>
+            <field name="model">patient.record</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <tree string="patients">
+                    <field name="refp"/>
+                    <field name="name"/>
+                    <field name="patient_name" invisible="1"/>
+                    <field name="is_assureur"/>
+                    <field name="patient_gender"/>
+                    <field name="patient_dob"/>
+                    <field name="patient_telephone"/>
+                    <field name="patient_telephone_bis"/>
+                    <field name="patient_email"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <!--
+       Form view
+       -->
+
+
+        <record id="view_patient_form" model="ir.ui.view">
+            <field name="name">patient.record.form</field>
+            <field name="model">patient.record</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="patients">
+                    <sheet>
+
+
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button"
+                                       options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
+                            </button>
+
+                              <!--
+                                    Supprimer les smart buttons lors de l'installation
+                                 -->
+
+
+                        </div>
+
+
+                        <field name="patient_photo" widget="image" class="oe_left oe_avatar"/>
+
+
+                       <div class="oe_title">
+                            <h3>
+                                <table>
+                                    <tr>
+                                        <td>
+                                                 <!--
+                                               # nom prenom
+                                               -->
+
+                                            <h1>
+                                                <field name="lastname" placeholder="Nom"/>
+                                                 &#x2063;
+                                                <field name="firstname" placeholder="Prenom" type="xml"/>
+                                            </h1>
+                                                <field name="name" required='1' invisible="1"/>
+                                                <field name="nameupdate"/>
+
+                                            <field name="patient_name" invisible="1"/>
+
+                                             <!--
+                                               # nom prenom
+                                               -->
+
+                                        </td>
+                                    </tr>
+                                </table>
+                            </h3>
+                        </div>
+                        <group col="2" string="Informations générales">
+                            <group>
+                                <field name="patient_gender"/>
+                                <field name="patient_civ"/>
+                                <field name="patient_dob"/>
+                                <field name="age"/>
+                                <field name="nationality_id" options="{'no_open':True, 'no_create_edit': True}"/>
+                                <field name="date" invisible="1"/>
+
+                            </group>
+                            <group>
+
+                                <field name="patient_profession"/>
+
+
+                                <field name="patient_statut"/>
+                                <field name="date_patient_arrived"/>
+                                <field name="date_inscription"/>
+                                <field name="employee_patient"/>
+                                <!--<field name="assuranc"/>-->
+                                <field name="refp" invisible="1"/>
+
+                            </group>
+
+                        </group>
+                        <group col="2" string="Coordonnées">
+                            <group>
+
+                                <field name="patient_region" placeholder="Choisissez votre region..."/>
+
+                                <field name="patient_town" placeholder="Ville..."/>
+
+                                <field name="patient_quartier" placeholder="Quartier..."/>
+
+                                <field name="patient_street" placeholder="Rue..."/>
+
+                            </group>
+                            <group>
+                                <field name="patient_telephone"/>
+                                <field name="patient_telephone_bis"/>
+                                <field name="patient_email" widget="email"/>
+                                <field name="patient_bp" placeholder="Boite postale..."/>
+                            </group>
+                        </group>
+
+                        <group col="2" string="Personne(s) à contacter">
+
+                            <group string="Tuteur 1">
+                                <field name="patient_tutor_name1"/>
+                                <field name="patient_tutor_number1"/>
+                            </group>
+
+                            <group string="Tuteur 2">
+                                <field name="patient_tutor_name2"/>
+                                <field name="patient_tutor_number2"/>
+                            </group>
+
+                        </group>
+
+                        <notebook colspan="4">
+
+                            <page name="Assurance" string="Assurance">
+                                <group col="2" string="dossier assurance">
+                                    <group>
+                                        <field name="is_assureur" domain="[('is_assureur','=',True)]"
+                                               context="{'search_default_is_assureur':1, 'default_is_assureur':1}"
+                                               options="{'no_open':True, 'no_create_edit': True}"/>
+                                        <field name="assurance_number" />
+                                    </group>
+                                    <group>
+                                        <field name="assurance_date" />
+                                        <field name="pourcentage" />
+                                    </group>
+                                </group>
+                            </page>
+
+                            <page name="antecedent" string="Antecedent"
+                                  groups="dental_office.group_dental_office_administrateur">
+
+                                <!--<field name="patient_comment"/>-->
+                                <h3 style="text-decoration:underline;text-align:center;">Questionnaires confidentiels
+                                </h3>
+                                <br/>
+                                <br/>
+                                <group col="8">
+                                    <label string="1.Souffrez-vous d'une maladie cardiaque ? "/>
+                                    <div>
+                                        <field name="ask01"/>
+                                    </div>
+                                </group>
+                                <group col="8">
+                                    <label string="2. Prenez vous des médicaments anti-coagulants ? "/>
+                                    <div>
+                                        <field name="ask02"/>
+                                    </div>
+                                </group>
+                                <group col="8">
+                                    <label string="3. Etes-vous diabétique ? "/>
+                                    <div>
+                                        <field name="ask03"/>
+                                    </div>
+                                </group>
+                                <group col="8">
+                                    <label string="4. Avez-vous un ulcère de l'estomac du duodénum "/>
+                                    <div>
+                                        <field name="ask04"/>
+                                    </div>
+                                </group>
+                                <group col="8" attrs="{'invisible': [('ask04','=', 'N')]}">
+                                    <label string="4.1) Avez- vous eu un dans le passé "/>
+                                    <div>
+                                        <field name="ask04_1"/>
+                                    </div>
+                                </group>
+                                <group col="8">
+                                    <label string="5. Avez-vous, ou avez eu des manifestations allergiques? "/>
+                                    <div>
+                                        <field name="ask05"/>
+                                    </div>
+                                </group>
+                                <group col="3" attrs="{'invisible': [('ask05','=', 'N')]}">
+                                    <label string="5.1) Précisez les quelles "/>
+                                    <div>
+                                        <field name="ask05_1"/>
+                                    </div>
+                                </group>
+
+                                <group col="8" attrs="{'invisible': [('patient_gender','=', 'h')]}">
+                                    <label string="6. Pour les femmes : Etes vous enceintes ?  Si oui , à quel mois de grossesse en êtes vous actuellement ?"/>
+                                    <div>
+                                        <field name="ask06"/>
+                                    </div>
+                                </group>
+                                <group col="8">
+                                    <label string="7. Avez vous déja présenté des accidents à la suite, ou pendant une extraction dentaire ? "/>
+                                    <div>
+                                        <field name="ask07"/>
+                                    </div>
+                                </group>
+                                <group col="3" attrs="{'invisible': [('ask07','=', 'N')]}">
+                                    <label string="7.1) Précisez les quelles :"/>
+                                    <div>
+                                        <field name="ask07_1"/>
+                                    </div>
+                                </group>
+                                <group col="8">
+                                    <label string="8. Avez vouz présenté un incident pendant une anesthésie ? "/>
+                                    <div>
+                                        <field name="ask08"/>
+                                    </div>
+                                </group>
+                                <group col="8">
+                                    <label string="9. Prenez-vous actuellement des médicaments ? "/>
+                                    <div>
+                                        <field name="ask09"/>
+                                    </div>
+                                </group>
+                                <group col="3" attrs="{'invisible': [('ask09','=', 'N')]}">
+                                    <label string="9.1) Précisez le(s)quelle(s) :"/>
+                                    <div>
+                                        <field name="ask09_1"/>
+                                    </div>
+                                </group>
+                                <group col="8">
+                                    <label string="10. Avez vous suivi ,ou suivez-vous un traitement par rayon? "/>
+                                    <div>
+                                        <field name="ask10"/>
+                                    </div>
+                                </group>
+                                <group col="8">
+                                    <label string="11. Avez vous eu un rhumatisme articulaire aigu? "/>
+                                    <div>
+                                        <field name="ask11"/>
+                                    </div>
+                                </group>
+                                <group col="8">
+                                    <label string="12. Avez-vous eu une hépatite virale ? "/>
+                                    <div>
+                                        <field name="ask12"/>
+                                    </div>
+                                </group>
+                                <group col="8">
+                                    <label string="13. Etes-vous séropositif ? "/>
+                                    <div>
+                                        <field name="ask13"/>
+                                    </div>
+                                </group>
+                                <group col="8">
+                                    <label string="14.Avez vous quelque chose à ajouter sur votre état de santé géneral ? "/>
+                                    <div>
+                                        <field name="ask14"/>
+                                    </div>
+                                </group>
+                                <group col="3" attrs="{'invisible': [('ask14','=', 'N')]}">
+                                    <label string="14.1) Précisez le(s)quelle(s) :"/>
+                                    <div>
+                                        <field name="ask14_1"/>
+                                    </div>
+                                </group>
+                                <group col="8">
+                                    <label string="15. Fumez-vous? "/>
+                                    <div>
+                                        <field name="ask15"/>
+                                    </div>
+                                    <br></br>
+                                </group>
+                                <group col="3" attrs="{'invisible': [('ask15','=', 'N')]}">
+                                    <label string="a) Si oui combien de temps ? "/>
+                                    <div>
+                                        <field name="ask15_1"/>
+                                    </div>
+                                </group>
+                                <group col="3" attrs="{'invisible': [('ask15','=', 'N')]}">
+                                    <label string="a) Combien de cigarette par jour? "/>
+                                    <div>
+                                        <field name="ask15_2"/>
+                                    </div>
+                                </group>
+                                <group col="8">
+                                    <label string="16. Avez vous l'impression que vos dents 'se déchaussent' ? "/>
+                                    <div>
+                                        <field name="ask16"/>
+                                    </div>
+                                </group>
+
+                            </page>
+
+                            <page name="Rendez-vous" string="Rendez-vous">
+                                <group>
+                                    <tree>
+                                        <field name="rdv_ids"/>
+                                    </tree>
+                                </group>
+                            </page>
+
+
+                            <page name="Consultation" string="Consultation"
+                                  groups="dental_office.group_dental_office_administrateur">
+                                <group>
+                                    <tree>
+                                        <field name="con_ids"/>
+                                    </tree>
+                                </group>
+                            </page>
+
+
+                            <page name="Ordonnance medical" string="Ordonnance medicale"
+                                  groups="dental_office.group_dental_office_administrateur">
+                                <group>
+                                    <tree>
+                                        <field name="ord_ids"/>
+                                    </tree>
+                                </group>
+                            </page>
+
+                            <page name="Demande expertise" string="Demande Expertise"
+                                  groups="dental_office.group_dental_office_administrateur">
+                                <group>
+                                    <tree>
+                                        <field name="expertise_ligne"/>
+                                    </tree>
+                                </group>
+                            </page>
+
+                            <page name="Certificat medical" string="Certificat medical"
+                                  groups="dental_office.group_dental_office_administrateur">
+                                <group>
+                                    <tree>
+                                        <field name="certificat_ligne"/>
+                                    </tree>
+                                </group>
+                            </page>
+
+                            <page name="Devis" string="Devis" groups="dental_office.group_dental_office_administrateur">
+                                <group>
+                                    <tree>
+                                        <field name="traitment_ids"/>
+                                    </tree>
+                                </group>
+                            </page>
+
+
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--
+       search view
+       -->
+
+
+        <record id="view_patients_search" model="ir.ui.view">
+            <field name="name">patient.record.search</field>
+            <field name="model">patient.record</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="patient">
+                    <field name="lastname"/>
+                    <field name="firstname"/>
+                    <field name="is_assureur"/>
+                    <newline/>
+                    <group expand="0" name="group_by" string="Group By...">
+                        <filter string="active" name="inactive" domain="[('active','=',False)]"/>
+                        <filter name="lastname" string="Nom" domain="[]" context="{'group_by':'lastname'}"/>
+                        <filter name="firstname" string="Prenom" domain="[]" context="{'group_by':'firstname'}"/>
+                        <filter name="is_assureur" string="Asurance" domain="[]" context="{'group_by':'is_assureur'}"/>
+                        <filter name="patient_gender" string="Genre" domain="[]"
+                                context="{'group_by':'patient_gender'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+         <!--
+       Supprimer lors de l'installation
+       -->
+          <!--
+       Generer les pdf
+       -->
+
+
+
+
+        <record model="ir.actions.act_window" id="action_view_patients">
+            <field name="name">Patient</field>
+            <field name="res_model">patient.record</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Créer un nouveau patient
+                </p>
+                <p>
+                    Ce module vous permet d'enregistrer les informations relatifs au(x) patients a savoir
+                    ses informations personnelles,coordonnees,sa consultation,etc......
+                </p>
+            </field>
+        </record>
+
+        <!--
+          count id patient
+          -->
+        <record model="ir.sequence" id="seq_dent_patient">
+            <field name="name">Patient</field>
+            <field name="code">patient.record</field>
+            <field name="prefix">PTT</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+
+        <!--
+              menu view
+              -->
+
+
+        <!--record id="view_partner_form_whatsapp" model="ir.ui.view">
+            <field name="name">patient.record.form.whatsapp</field>
+            <field name="model">patient.record</field>
+            <field name="inherit_id" ref="dental_office.view_patient_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='patient_telephone']" position="after">
+                    <field name="mobile_whatsapp_link"/>
+                </xpath>
+            </field>
+        </record>-->
+
+        <record id="view_partner_form_whatsapp" model="ir.ui.view">
+            <field name="name">res.partner.view.form.whatsapp</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='mobile']" position="after">
+                    <field name="mobile_whatsapp_link"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--form invoices
+        -->
+
+
+        <record id="dent_invoice_cust_invoice_view_line" model="ir.ui.view">
+            <field name="name">account.invoice.cust.invoice_form_line</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='name']" position="after">
+                    <field name="dent"/>
+                    <field name="code"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!--rapport statistique facture
+            -->
+        <record model="ir.actions.act_window" id="action_view_stastique">
+            <field name="name">Facture</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,graph</field>
+            <field name="view_id" ref="account.invoice_tree"/>
+            <field name="domain">[]</field>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create"></p>
+            </field>
+        </record>
+
+
+        <record id="dent_invoice_cust_invoice_view" model="ir.ui.view">
+            <field name="name">account.invoice.cust.invoice_form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_invoice']" position="after">
+                    <field name="pourcentage_assureur" />
+                </xpath>
+                 <xpath expr="//field[@name='partner_id']" position="replace">
+                    <field name="patient_name" />
+                    <field name="partner_id" invisible="1"/>
+				 </xpath>
+                 <xpath expr="//field[@name='user_id']" position="replace">
+                    <field name="user_id" invisible="1"/>
+                     <field name="nom_medecin" />
+				 </xpath>
+            </field>
+        </record>
+
+
+        <record id="dent_invoice_assurance_view" model="ir.ui.view">
+            <field name="name">account.invoice.cust.invoice_form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='amount_tax']" position="before">
+                    <field name="montant_assur" widget="monetary"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="dent_invoice_cust_invoice_filter_view" model="ir.ui.view">
+            <field name="name">account.invoice.cust.invoice_filter_form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="test_devis"/>
+                </xpath>
+            </field>
+        </record>
+
+
+
+
+        <record model="ir.actions.act_window" id="dent_invoice_action">
+            <field name="name">Invoices</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban,calendar,graph,pivot</field>
+            <field name="view_id" ref="account.invoice_tree"/>
+            <field name="domain">[('is_dent_invoice','=',True)]</field>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Créer facture.
+                </p>
+            </field>
+        </record>
+        <record id="dent_invoice_action_view_tree" model="ir.actions.act_window.view">
+            <field name="sequence">1</field>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="dent_invoice_action"/>
+        </record>
+        <record id="dent_invoice_view_form" model="ir.actions.act_window.view">
+            <field name="sequence">2</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="account.invoice_form"/>
+            <field name="act_window_id" ref="dent_invoice_action"/>
+        </record>
+
+        <!--
+       traitment.record: enregistrer les traitements  pour un patient
+       -->
+
+        <!--
+            tree view
+            -->
+        <record id="view_devis_tree" model="ir.ui.view">
+            <field name="name">devis.record.tree</field>
+            <field name="model">devis.record</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <tree string="devis" decoration-info="state == 'draft'" colors="black:state == 'confirm';">
+                    <field name="id_devis"/>
+                    <field name="name"/>
+                    <field name="devi_date"/>
+                    <field name="state"/>
+                    <field name="pourcentage"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--
+            form view
+            -->
+        <record model="ir.sequence" id="seq_devis">
+            <field name="name">devis</field>
+            <field name="code">devis.record</field>
+            <field name="prefix">ID</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+
+        <record id="view_devis_form" model="ir.ui.view">
+            <field name="name">devis.record.form</field>
+            <field name="model">devis.record</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="devis">
+                    <header>
+                        <button name="create_invoice" states="draft" string="Confirmé Facture" type="object"
+                                class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm"/>
+                    </header>
+
+
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="%(dent_invoice_action)d" type="action" class="oe_stat_button"
+                                    icon="fa-pencil-square-o" context="{'search_default_test_devis': [active_id]}"
+                                    attrs="{'invisible': [('inv_count', '=', 0)]}">
+                                <field name="inv_count" widget="statinfo" string="Facture"
+                                />
+
+                            </button>
+                        </div>
+
+                        <div class="oe_left" style="width: 500px;">
+                            <div class="oe_title" style="width: 390px;">
+                                <label class="oe_edit_only" for="id_devis"/>
+                                <h1>
+                                    <field name="id_devis" class="oe_inline"/>
+                                </h1>
+                            </div>
+                        </div>
+
+                        <group col="2">
+                            <group>
+                                    <img src='/dental_office/static/description/dentition.jpg'/>
+                            </group>
+                            <group>
+                                <field name="name" options="{'no_create_edit': True}"
+                                       attrs="{'readonly': [('state', 'in', ['confirm'])]}"/>
+                                <field name="is_assureur" options="{'no_open':True, 'no_create_edit': True}" attrs="{'readonly': [('state', 'in', ['confirm'])]}"/>
+                                <field name="numero" attrs="{'readonly': [('state', 'in', ['confirm'])]}"/>
+                                <field name="pourcentage" attrs="{'readonly': [('state', 'in', ['confirm'])]}"/>
+                                <field name="devi_date" attrs="{'readonly': [('state', 'in', ['confirm'])]}"/>
+
+                            </group>
+                        </group>
+                        <notebook colspan="4">
+                            <page string="ligne soins">
+                                <field name="line_soins"
+                                       attrs="{'readonly': [('state', 'in', ['confirm'])]}">
+
+                                    <tree string="line soins" editable="bottom">
+                                        <field name="dent" options="{'no_create_edit': True}"/>
+                                        <field name="nomsoin"/>
+                                        <field name="codsoin"/>
+                                        <field name="prix"/>
+                                        <field name="amount"/>
+                                    </tree>
+                                </field>
+                                <group class="oe_amount_footer oe_right" colspan="2" name="total_montant">
+                                   <field name="total_amount" widget="monetary"
+                                           options="{'currency_field':'company_currency_id'}"/>
+                                    <field name="total_amount_ass" widget="monetary"
+                                           options="{'currency_field':'company_currency_id'}"/>
+                                    <field name="total_amount_pat" widget="monetary"
+                                           options="{'currency_field':'company_currency_id'}"/>
+                                    <field name="company_id" invisible ="1"/>
+                                    <field name="company_currency_id"  invisible ="1"/>
+                                </group>
+
+                            </page>
+                        </notebook>
+
+                    </sheet>
+
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!--
+            search view
+            -->
+
+        <record id="view_devis_search" model="ir.ui.view">
+            <field name="name">devis.record.search</field>
+            <field name="model">devis.record</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="Patient">
+                    <field name="name"/>
+                    <field name="id_devis"/>
+
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter name="devi_date" string="date" domain="[]" context="{'group_by':'devi_date'}"/>
+                        <filter name="name" string="statut" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+
+        <!--
+            home view
+            -->
+
+        <record model="ir.actions.act_window" id="action_view_traitment">
+            <field name="name">Devis</field>
+            <field name="res_model">devis.record</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Créer un devis patient
+                </p>
+            </field>
+        </record>
+
+        <!--
+        menu view
+        -->
+
+    </data>
+</odoo>

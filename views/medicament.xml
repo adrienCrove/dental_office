@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="_form" model="ir.ui.view">
+            <field name="name">Medicament.form</field>
+            <field name="model">medicament.record</field>
+            <field name="arch" type="xml">
+                <form string="medicament">
+                    <header>
+
+                    </header>
+                    <sheet string="Formulaire medicament">
+                        <group>
+                            <field name="nom_medicament"/>
+                            <field name="prise_medicament"/>
+                            <field name="gramme"/>
+                        </group>
+
+                    </sheet>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="_tree" model="ir.ui.view">
+            <field name="name">medicament.tree</field>
+            <field name="model">medicament.record</field>
+            <field name="arch" type="xml">
+                <tree string="medicament">
+                    <field name="ref"/>
+                    <field name="nom_medicament"/>
+                    <field name="gramme"/>
+                    <field name="prise_medicament"/>
+
+                </tree>
+            </field>
+        </record>
+
+    <!--    <record id="view_medicament_search" model="ir.ui.view">
+            <field name="name">medicament.search</field>
+            <field name="model">medicament.record</field>
+            <field name="arch" type="xml">
+                <search string="Medicament">
+
+                </search>
+            </field>
+        </record>
+-->
+
+        <record model="ir.sequence" id="seq_medicament">
+            <field name="name">Medicament</field>
+            <field name="code">medicament.record</field>
+            <field name="prefix">ME</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+
+        <record id="medicament_view_action" model="ir.actions.act_window">
+            <field name="name">Medicaments</field>
+            <field name="res_model">medicament.record</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+           <!-- <field name="search_view_id" ref="_search"/>-->
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Créer l'ensemble les medicaments relatifs au(x) patients
+                </p>
+                <p>
+
+                </p>
+            </field>
+        </record>
+
+
+    <menuitem id="medicament_item" action="medicament_view_action" parent="Configuration" name="Medicaments"  sequence="20"/>
+
+    </data>
+</odoo>

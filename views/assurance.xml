@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.actions.act_window" id="action_view_assurance">
+            <field name="name">Assureur</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_assureur','=',1)]</field>
+            <field name="context">{'default_customer':0, 'default_supplier':0 , 'default_is_assureur':1, 'default_is_patient':0}</field>
+            <field name="filter" eval="True"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                  créer nouveau Assureur.
+              </p>
+            </field>
+        </record>
+
+
+         <record id="view_assu_partner_inherit" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                <page string="Cabinet Dentaire" groups="base.group_user">
+                    <group>
+                        <field name="is_assureur"/>
+                        <field name="is_pat" attrs="{'invisible': [('is_assureur', '=', True)]}" />
+                        <field name="code"  attrs="{'invisible': [('is_assureur', '=', False)]}"/>
+                    </group>
+                </page>
+            </notebook>
+            </field>
+        </record>
+     <menuitem id="Assurance" name="Assurance" parent="Configuration" action="action_view_assurance" sequence="40"/>
+    </data>
+</odoo>

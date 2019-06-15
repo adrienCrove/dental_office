@@ -1,0 +1,7 @@
+<template id="test" name="test" inherit_id="dental_office.view_patient_form">
+
+    <xpath expr="//field[@name='patient_gender']" position="before">
+        <script type="text/javascript" src="/dental_office/static/src/js/test.js"/>
+    </xpath>
+    
+</template>

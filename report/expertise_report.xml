@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+<report
+    id="expertise_report"
+    model="expertise.record"
+    string="expertise"
+    report_type="qweb-pdf"
+    name="dental_office.expertise_view_report"
+    file="dental_office.expertise"
+/>
+
+           <template id="expertise_view_report">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+
+                            <p class="text-right">
+
+                                <span t-field="o.date_expertise"/>
+
+                            </p>
+                            <p class="text-left">
+
+                                <h4>
+                                    <span t-att-style="style" t-esc="o.ref"/>
+                                </h4>
+
+                            </p>
+
+
+                            <h4 style="text-decoration:underline;text-align:center;">
+                                <b>Demande d'expertise</b>
+                            </h4>
+
+                            <br>
+
+                            </br>
+                            <br>
+
+                            </br>
+                            <br>
+
+                            </br>
+
+                            <p>Nom du patient:
+                                <strong>
+                                    <span t-field="o.patient_expertise"/>
+                                </strong>
+                            </p>
+                            <br>
+
+                            </br>
+
+                            <p>Motif expertise:
+                                <p>
+                                    <strong>
+                                        <span t-field="o.motif_expertise"/>
+                                    </strong>
+
+                                </p>
+
+                            </p>
+
+                             <br>
+
+                            </br>
+                            <br>
+
+                            </br>
+                            <br>
+
+                            </br>
+                            <br>
+
+                            </br>
+                            <br>
+
+                            </br>
+                            <br>
+
+                            </br>
+                            <br>
+
+                            </br>
+                            <p class="text-right">
+
+                                <h4 style="text-decoration:underline;text-align:right;">
+
+                                    Signature du Médecin
+                                </h4>
+
+                            </p>
+
+
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>
